@@ -1,0 +1,198 @@
+[
+  {
+    "original_path": "README.md",
+    "retained_path": "docs/ORIGINAL_README.md",
+    "sha256": "130cef8c4162a888a395f10c4b5f78f82b60e7e3149d3063c6c5fbfc3665f4de",
+    "status": "english_translation_with_original_archive",
+    "archive_path": "archive/originals/README.md"
+  },
+  {
+    "original_path": "中证500备兑策略/500ETF/510500_510500_underlying.csv",
+    "retained_path": "中证500备兑策略/500ETF/510500_510500_underlying.csv",
+    "sha256": "287b5ad96c9164f33581e8acaa5bb81dba8c11bd81c4c3c3079d692d6552d8fc",
+    "status": "unchanged"
+  },
+  {
+    "original_path": "中证500备兑策略/500ETF/510500_option_contract.csv",
+    "retained_path": "中证500备兑策略/500ETF/510500_option_contract.csv",
+    "sha256": "c41e518b7dcfe9ac9915f3de73ceb9e4859b6d83cb1a1c391f5121e5e9d55ec5",
+    "status": "unchanged"
+  },
+  {
+    "original_path": "中证500备兑策略/500ETF/510500_option_contract_raw.csv",
+    "retained_path": "中证500备兑策略/500ETF/510500_option_contract_raw.csv",
+    "sha256": "c2c5f4c3c0346d0789a8dc92e0c5d2354c8b6ceba5ba6a44455f28bf2d463e25",
+    "status": "unchanged"
+  },
+  {
+    "original_path": "中证500备兑策略/500ETF/510500_option_prices.csv",
+    "retained_path": "中证500备兑策略/500ETF/510500_option_prices.csv",
+    "sha256": "9b6621db180d707f888ef35d57209775050bf4c639eacd15011d23672d01a987",
+    "status": "unchanged"
+  },
+  {
+    "original_path": "中证500备兑策略/500ETF/510500_underlying.csv",
+    "retained_path": "中证500备兑策略/500ETF/510500_underlying.csv",
+    "sha256": "bd1081ecc06466ba21e99f8263cd13cc3c1b4e5aed22f3b8e4420bdfe0de390d",
+    "status": "unchanged"
+  },
+  {
+    "original_path": "中证500备兑策略/CoverCallStrategy.ipynb",
+    "retained_path": "中证500备兑策略/CoverCallStrategy.ipynb",
+    "sha256": "e4e5ac29d64ae698a07ac90cfea3dbae44833b9c4beedae5253fa20dd3ad8c0a",
+    "status": "english_translation_with_original_archive",
+    "original_code_cells_sha256": "a4df347fa6a027e736aea2adc91a24ff4054c826786f0b2fcf5429b3edb2206e",
+    "archive_path": "archive/originals/中证500备兑策略/CoverCallStrategy.ipynb",
+    "notebook_semantic_sha256": "9d7ab61f113cfc346b95dbbbd6cae644dca0696bb28f5eddaaa797621cea01f1"
+  },
+  {
+    "original_path": "中证500备兑策略/OptionWheelStrategy.ipynb",
+    "retained_path": "中证500备兑策略/OptionWheelStrategy.ipynb",
+    "sha256": "bd844c008c5a9d1c72491dbada9e05b426fb4f132608d025ba4598e59aa09941",
+    "status": "english_translation_with_original_archive",
+    "original_code_cells_sha256": "e8b567f4c50b6be7a566a7b7e28bfc5359315b2cd3d1f69ebf07f677c49f4d7d",
+    "archive_path": "archive/originals/中证500备兑策略/OptionWheelStrategy.ipynb",
+    "notebook_semantic_sha256": "f727f7c7f576b8a0d0ac8c24eb8806ff5a92851e1a1f7f3855310d0a81d4e830"
+  },
+  {
+    "original_path": "中证500备兑策略/analytics/black_scholes.py",
+    "retained_path": "中证500备兑策略/analytics/black_scholes.py",
+    "sha256": "7c2ab33cced45052b3b35db4c91f5acf036d307d4de35e8421ed9fa70f2ac1b2",
+    "status": "english_translation_with_original_archive",
+    "archive_path": "archive/originals/中证500备兑策略/analytics/black_scholes.py",
+    "semantic_sha256": "22722da948cba310471d1574977d813407b1dfeca165252e7a08f12130c02bba"
+  },
+  {
+    "original_path": "中证500备兑策略/data/__pycache__/loader.cpython-312.pyc",
+    "retained_path": "中证500备兑策略/data/__pycache__/loader.cpython-312.pyc",
+    "sha256": "fc7951719218df031e1de25593963ee8687085fd675840f8c370510b568c361d",
+    "status": "removed_cache"
+  },
+  {
+    "original_path": "中证500备兑策略/data/loader.py",
+    "retained_path": "中证500备兑策略/data/loader.py",
+    "sha256": "77f29983614a325d87e008423dab91e9f916fde78d96767b3249dd8773fec3ed",
+    "status": "english_translation_with_original_archive",
+    "archive_path": "archive/originals/中证500备兑策略/data/loader.py",
+    "semantic_sha256": "666ae3eba75e4fc54f65e44ce429a632ca4fc4914a32a4fac06978ac5311311c"
+  },
+  {
+    "original_path": "中证500备兑策略/engine/__pycache__/engine.cpython-312.pyc",
+    "retained_path": "中证500备兑策略/engine/__pycache__/engine.cpython-312.pyc",
+    "sha256": "19eadca13e6701cfcc3f4b1703bf5769c16910a1fd13d608ad0e73c7ab63a07d",
+    "status": "removed_cache"
+  },
+  {
+    "original_path": "中证500备兑策略/engine/engine.py",
+    "retained_path": "中证500备兑策略/engine/engine.py",
+    "sha256": "6374a76a880de56d509ca7a5cdaee827889609555455b41b58f701f9998e2af3",
+    "status": "english_translation_with_original_archive",
+    "archive_path": "archive/originals/中证500备兑策略/engine/engine.py",
+    "semantic_sha256": "6b7cc72b8772d5f1aeef199d7eb61167a2dba20f2872a4c52509328f96b52fa5"
+  },
+  {
+    "original_path": "中证500备兑策略/option_builder/__pycache__/option_process.cpython-312.pyc",
+    "retained_path": "中证500备兑策略/option_builder/__pycache__/option_process.cpython-312.pyc",
+    "sha256": "cf8701c622dee0fc028a359e1f8a4343e5250394f2f72be9c43287881073c044",
+    "status": "removed_cache"
+  },
+  {
+    "original_path": "中证500备兑策略/option_builder/option_process.py",
+    "retained_path": "中证500备兑策略/option_builder/option_process.py",
+    "sha256": "9ebcf49d9c5114e69c21625da5320ff3155b88bf64e2271347b3d2ab02133951",
+    "status": "english_translation_with_original_archive",
+    "archive_path": "archive/originals/中证500备兑策略/option_builder/option_process.py",
+    "semantic_sha256": "45315a19e662ee62f2507bf572fd3d0405071bcd861cb32df7cd253f5482b3f7"
+  },
+  {
+    "original_path": "中证500备兑策略/portfolio/__pycache__/portfolio.cpython-312.pyc",
+    "retained_path": "中证500备兑策略/portfolio/__pycache__/portfolio.cpython-312.pyc",
+    "sha256": "76b1305ecd877302a48d9c34737f4c08b05e4397215ca55db043e54be60e12b7",
+    "status": "removed_cache"
+  },
+  {
+    "original_path": "中证500备兑策略/portfolio/portfolio.py",
+    "retained_path": "中证500备兑策略/portfolio/portfolio.py",
+    "sha256": "0c5183441676c7915f86b173d20b879d90e65c791f97cd137c87903ead1d5a49",
+    "status": "english_translation_with_original_archive",
+    "archive_path": "archive/originals/中证500备兑策略/portfolio/portfolio.py",
+    "semantic_sha256": "db16bc46512f7a1c65aa184b8adc3325ccc5c4b6a29cff7ccd8b5304ffb0acfa"
+  },
+  {
+    "original_path": "中证500备兑策略/strategy/__pycache__/cover_call_strategy.cpython-312.pyc",
+    "retained_path": "中证500备兑策略/strategy/__pycache__/cover_call_strategy.cpython-312.pyc",
+    "sha256": "1f595d2828ffb788b81e611c52667a33cbd1d4c5dddeb5601dab06a357d312c4",
+    "status": "removed_cache"
+  },
+  {
+    "original_path": "中证500备兑策略/strategy/__pycache__/option_wheel_strategy.cpython-312.pyc",
+    "retained_path": "中证500备兑策略/strategy/__pycache__/option_wheel_strategy.cpython-312.pyc",
+    "sha256": "7e502dc2dd54c4a88866f0985d5cd38356b53e5bd0e1e49a9654214baa54ca01",
+    "status": "removed_cache"
+  },
+  {
+    "original_path": "中证500备兑策略/strategy/__pycache__/synthetic_futures_arbitrage.cpython-312.pyc",
+    "retained_path": "中证500备兑策略/strategy/__pycache__/synthetic_futures_arbitrage.cpython-312.pyc",
+    "sha256": "4fe30aa725229cf152d227ad6420e3979596c0bb11e1cdf11f451296dac2ff91",
+    "status": "removed_cache"
+  },
+  {
+    "original_path": "中证500备兑策略/strategy/__pycache__/template_option_strategy.cpython-312.pyc",
+    "retained_path": "中证500备兑策略/strategy/__pycache__/template_option_strategy.cpython-312.pyc",
+    "sha256": "cb669b97c4e40bf13a9939d7d6a2bada8ef9efea275e8360a62e277da1b195b2",
+    "status": "removed_cache"
+  },
+  {
+    "original_path": "中证500备兑策略/strategy/__pycache__/template_underlying_strategy.cpython-312.pyc",
+    "retained_path": "中证500备兑策略/strategy/__pycache__/template_underlying_strategy.cpython-312.pyc",
+    "sha256": "e1ce7b6253d5faef36ab88fd02accfb1e456aa155cbd06f8624cadacfea5d192",
+    "status": "removed_cache"
+  },
+  {
+    "original_path": "中证500备兑策略/strategy/cover_call_strategy.py",
+    "retained_path": "中证500备兑策略/strategy/cover_call_strategy.py",
+    "sha256": "520cedf3b8882fae30ddcbb02a4eb849af377e3d4297a0613b37589472a03ca4",
+    "status": "english_translation_with_original_archive",
+    "archive_path": "archive/originals/中证500备兑策略/strategy/cover_call_strategy.py",
+    "semantic_sha256": "2674533b570cc847c23310a902a73c3d9c4de09850355b011356bf5721fde951"
+  },
+  {
+    "original_path": "中证500备兑策略/strategy/option_wheel_strategy.py",
+    "retained_path": "中证500备兑策略/strategy/option_wheel_strategy.py",
+    "sha256": "cee26362e0c2baf956f85385c300e975456e02f07db7959459688fccfb81372a",
+    "status": "english_translation_with_original_archive",
+    "archive_path": "archive/originals/中证500备兑策略/strategy/option_wheel_strategy.py",
+    "semantic_sha256": "c2ed475da1f1fccfb1383a0937792fbb3d53821e3df0ef9d0156b738a3b15479"
+  },
+  {
+    "original_path": "中证500备兑策略/strategy/synthetic_futures_arbitrage.py",
+    "retained_path": "中证500备兑策略/strategy/synthetic_futures_arbitrage.py",
+    "sha256": "0e5cd17f8ce64cca24945ec2f64af3e534d168b57f553a59d430145bad710892",
+    "status": "english_translation_with_original_archive",
+    "archive_path": "archive/originals/中证500备兑策略/strategy/synthetic_futures_arbitrage.py",
+    "semantic_sha256": "86e98fb7272446563d2ce4920e5e31feb1c41dbcf4b5f3639b076b1221a793a8"
+  },
+  {
+    "original_path": "中证500备兑策略/strategy/template_option_strategy.py",
+    "retained_path": "中证500备兑策略/strategy/template_option_strategy.py",
+    "sha256": "8b452aff72416ac508d44a445d2ac2dd8a1014bca74514cdc6001e687f041ea5",
+    "status": "english_translation_with_original_archive",
+    "archive_path": "archive/originals/中证500备兑策略/strategy/template_option_strategy.py",
+    "semantic_sha256": "023e6e48e0ea6ebe116f10928326cca73091b4b82d20b6fc1df1b048f697b5ba"
+  },
+  {
+    "original_path": "中证500备兑策略/strategy/template_underlying_strategy.py",
+    "retained_path": "中证500备兑策略/strategy/template_underlying_strategy.py",
+    "sha256": "610488d2157e9e72b065a3453970bbe0fe0669dc1f3f16348013ee00f198748d",
+    "status": "english_translation_with_original_archive",
+    "archive_path": "archive/originals/中证500备兑策略/strategy/template_underlying_strategy.py",
+    "semantic_sha256": "51ed729817ec27fc86bdc5ad2b2ac67de4ee11a312a5a3b993d0f43d54b276c0"
+  },
+  {
+    "original_path": "中证500备兑策略分析.pdf",
+    "retained_path": "Cover_Call_Research_EN.pdf",
+    "sha256": "bb4aa14c09f173490605d5d2676ecd38069bc466c65c8eeeb54dea2fca02a87b",
+    "status": "english_translation_with_original_archive",
+    "archive_path": "archive/originals/中证500备兑策略分析.pdf"
+  }
+]

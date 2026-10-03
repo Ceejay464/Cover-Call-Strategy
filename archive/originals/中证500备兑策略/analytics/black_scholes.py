@@ -114,12 +114,12 @@ def time_to_expiry(timestamp): # only for 0DTE Option
 
     return T
 # =========================================================
-# 4. Convenience wrapper (recommended)
+# 4️⃣ Convenience wrapper（推荐你用这个）
 # =========================================================
 
 def full_greeks(option_type, S, K, T, r, sigma):
     """
-    Return a consistent structure for direct insertion into the option dictionary
+    返回一个统一结构，方便你直接塞进 option dict
     """
 
     if option_type == "call":
@@ -132,7 +132,7 @@ def full_greeks(option_type, S, K, T, r, sigma):
         }
 
     elif option_type == "put":
-        # Put theta can be added later; use a simplified treatment here
+        # put theta 你可以后面补，这里先简单处理
         return {
             "price": put_price(S, K, T, r, sigma),
             "delta": delta_put(S, K, T, r, sigma),

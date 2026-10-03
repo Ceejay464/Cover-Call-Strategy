@@ -124,7 +124,7 @@ class Portfolio:
             "cost": cost
         })
 
-        # Fix: set instrument to "underlying"
+        # ✅ 修复：instrument 改为 "underlying"
         self.record_trade_pnl(
             timestamp=timestamp,
             instrument="underlying",
@@ -174,7 +174,7 @@ class Portfolio:
                 price=spot_price
             )
 
-        # Fix: use the correct attribute position_expire_date
+        # ✅ 修复：使用正确的属性名 position_expire_date
         self.position_strike = None
         self.position_expire_date = None
 
@@ -182,7 +182,7 @@ class Portfolio:
     # Portfolio equity calculation
     def get_equity(self, timestamp, option_data, underlying_price):
         """
-        option_data: pd.DataFrame with columns ['order_book_id', 'close'] Option market snapshot for the current day
+        option_data: pd.DataFrame with columns ['order_book_id', 'close'] 当天的期权市场快照
         underlying_price: current underlying price
         """
         equity = self.cash
@@ -265,13 +265,13 @@ class Portfolio:
     def exercise_options(self, timestamp, spot_price, option_date):
 
         """
-        Exercise European ETF options at expiry
-        Process only on the expiry date：
-        - Long Call：ITM -> Buy the underlying
-        - Long Put：ITM -> Sell the underlying
-        - Short Call：ITM -> Deliver the underlying upon assignment
-        - Short Put：ITM -> Acquire the underlying upon assignment
-        All OTM options expire worthless
+        ETF欧式期权到期行权
+        只有到期日才会处理：
+        - 多Call：价内 -> 买入标的
+        - 多Put：价内 -> 卖出标的
+        - 空Call：价内 -> 被行权卖出标的
+        - 空Put：价内 -> 被行权买入标的
+        价外全部作废
         """
 
         strike_map = option_date.set_index("order_book_id")["strike_price"].to_dict()
@@ -285,7 +285,7 @@ class Portfolio:
             expiry = pd.to_datetime(pos["expire_date"])
 
             # =====================================================
-            # Process only on the expiry date (European options)
+            # 只有到期日才处理（欧式期权）
             # =====================================================
             if pd.to_datetime(timestamp) < expiry:
                 continue
@@ -293,13 +293,13 @@ class Portfolio:
             strike = strike_map.get(oid)
 
             if strike is None:
-                print(f"Warning: Unable to obtain {oid} strike")
+                print(f"Warning: 无法获取 {oid} strike")
                 continue
 
             exercise_qty = abs(qty) * self.multiplier
 
             # =====================================================
-            # Long options
+            # 多头期权
             # =====================================================
             if qty > 0:
                 # Long Call
@@ -311,9 +311,9 @@ class Portfolio:
                             quantity=trade_qty,
                             price=strike
                         )
-                        print(f"Exercise long Call | {oid} | +{trade_qty} underlying @ {strike}")
+                        print(f"多头认购行权 | {oid} | +{trade_qty} underlying @ {strike}")
                     else:
-                        print(f"Long Call expires unexercised | {oid}")
+                        print(f"多头认购，不行权 | {oid}")
                 # Long Put
                 else:
                     if spot_price <= strike:
@@ -323,12 +323,12 @@ class Portfolio:
                             quantity=trade_qty,
                             price=strike
                         )
-                        print(f"Exercise long Put | {oid} | {trade_qty} underlying @ {strike}")
+                        print(f"多头认沽行权 | {oid} | {trade_qty} underlying @ {strike}")
                     else:
-                        print(f"Long Put expires unexercised | {oid}")
+                        print(f"多头认沽，不行权 | {oid}")
 
             # =====================================================
-            # Short options
+            # 空头期权
             # =====================================================
             else:
                 # Short Call
@@ -340,9 +340,9 @@ class Portfolio:
                             quantity=trade_qty,
                             price=strike
                         )
-                        print(f"Short Call assigned | {oid} | {trade_qty} underlying @ {strike}")
+                        print(f"空头认购行权 | {oid} | {trade_qty} underlying @ {strike}")
                     else:
-                        print(f"Short Call expires unassigned | {oid}")
+                        print(f"空头认购，不行权 | {oid}")
                 # Short Put
                 else:
                     if spot_price <= strike:
@@ -352,12 +352,12 @@ class Portfolio:
                             quantity=trade_qty,
                             price=strike
                         )
-                        print(f"Short Put assigned | {oid} | +{trade_qty} underlying @ {strike}")
+                        print(f"空头认沽行权 | {oid} | +{trade_qty} underlying @ {strike}")
                     else:
-                        print(f"Short Put expires unassigned | {oid}")
+                        print(f"空头认沽，不行权 | {oid}")
 
             # =====================================================
-            # Remove expired options
+            # 删除到期期权
             # =====================================================
             del self.option_positions[oid]
 

@@ -5,7 +5,7 @@ class TemplateOptionStrategy:
     def __init__(self, quantity):
         self.entry_date = None
         self.exit_date = None
-        self.quantity = 1  # Use 1 contract to reduce capital requirements
+        self.quantity = 1  # ✅ 改为 1 张，避免资金压力过大
         self.next_entry_date = None
 
     # =========================================================
@@ -36,7 +36,7 @@ class TemplateOptionStrategy:
                 "option_type": option["option_type"]
             })
 
-        # Fix: reset strike outside the loop
+        # ✅ 修复：在循环外重置 strike
         portfolio.set_position_strike(None)
         portfolio.set_position_expire_date(None)
 
@@ -47,7 +47,7 @@ class TemplateOptionStrategy:
 
         orders = []
 
-        # Convert timestamp consistently to Timestamp
+        # 统一将 timestamp 转换为 Timestamp
         date = pd.Timestamp(timestamp).normalize()
 
         if option_snapshot is None or option_snapshot.empty:
@@ -74,7 +74,7 @@ class TemplateOptionStrategy:
         call = atm_call.iloc[0]
         put = atm_put.iloc[0]
 
-        # Ensure front_expiry is a Timestamp
+        # 确保 front_expiry 是 Timestamp
         front_expiry = pd.Timestamp(call["expire_date"]).normalize()
 
         # =====================================================
@@ -122,34 +122,34 @@ class TemplateOptionStrategy:
                 return orders
 
         # =====================================================
-        # RULE 2: ENTRY (Straddle strategy)
+        # RULE 2: ENTRY (跨式策略 Straddle)
         # =====================================================
         if not has_position:
 
             if date >= front_expiry:
                 return orders
 
-            # Buy Call
+            # 买入 Call
             orders.append({
                 "instrument": "option",
                 "order_book_id": call["order_book_id"],
-                "quantity": self.quantity,  # Positive quantity = buy
+                "quantity": self.quantity,  # 正数 = 买入
                 "price": call["close"],
                 "expire_date": call["expire_date"],
                 "option_type": "Call"
             })
 
-            # Buy Put
+            # 买入 Put
             orders.append({
                 "instrument": "option",
                 "order_book_id": put["order_book_id"],
-                "quantity": self.quantity,  # Positive quantity = buy
+                "quantity": self.quantity,  # 正数 = 买入
                 "price": put["close"],
                 "expire_date": put["expire_date"],
                 "option_type": "Put"
             })
 
-            # Buy the underlying ETF position
+            # 买入 ETF 底仓
             orders.append({
                 "instrument": "underlying",
                 "quantity": self.quantity * 10000

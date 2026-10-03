@@ -4,9 +4,9 @@ class SyntheticFuturesBasisArbitrageStrategy:
 
     def __init__(self, upper_threshold, down_threshold, quantity):
         """
-        upper_threshold: Opening threshold (premium); for example, 0.002 represents 0.2%
-        down_threshold: Closing threshold; for example, 0.001 represents 0.1%
-        quantity: Number of option contracts
+        upper_threshold: 开仓阈值（升水），例如 0.002 表示 0.2%
+        down_threshold: 平仓阈值，例如 0.001 表示 0.1%
+        quantity: 期权张数
         """
         self.entry_date = None
         self.lock_expiry = None
@@ -15,20 +15,20 @@ class SyntheticFuturesBasisArbitrageStrategy:
         self.quantity = quantity
 
     # =========================================================
-    # Obtain the daily execution price (close)
+    # 获取日频成交价（收盘价）
     # =========================================================
     def get_trade_price(self, snapshot):
         return snapshot.iloc[0]["close"]
 
     # =========================================================
-    # Close all positions
+    # 平仓所有持仓
     # =========================================================
     def _close_all(self, option_snapshot, option_pos, underlying_pos, portfolio):
 
         orders = []
 
         # =========================
-        # Close ETF position
+        # ETF 平仓
         # =========================
         if underlying_pos != 0:
             orders.append({
@@ -37,11 +37,11 @@ class SyntheticFuturesBasisArbitrageStrategy:
             })
 
         # =========================
-        # Close option positions
+        # 期权平仓
         # =========================
         for oid, pos in option_pos.items():
 
-            # Find the corresponding option in option_snapshot
+            # 从option_snapshot中查找对应的期权
             option_row = option_snapshot[option_snapshot["order_book_id"] == oid]
             if option_row.empty:
                 continue
@@ -51,7 +51,7 @@ class SyntheticFuturesBasisArbitrageStrategy:
             orders.append({
                 "instrument": "option",
                 "order_book_id": oid,
-                "quantity": -pos["quantity"],  # Close positions
+                "quantity": -pos["quantity"],  # 平仓
                 "price": option["close"],
                 "expire_date": option["expire_date"],
                 "option_type": option["option_type"]
@@ -66,14 +66,14 @@ class SyntheticFuturesBasisArbitrageStrategy:
         return orders
 
     # =========================================================
-    # Reset state
+    # 状态重置
     # =========================================================
     def _reset(self):
         self.entry_date = None
         self.lock_expiry = None
 
     # =========================================================
-    # Main logic
+    # 主逻辑
     # =========================================================
     def generate_signal(self, timestamp, underlying_snapshot, option_snapshot, portfolio, option_db):
 
@@ -84,7 +84,7 @@ class SyntheticFuturesBasisArbitrageStrategy:
             return orders
 
         # =========================================================
-        # 1. ETF closing prices
+        # 1. ETF 收盘价
         # =========================================================
         spot = self.get_trade_price(underlying_snapshot)
 
@@ -107,7 +107,7 @@ class SyntheticFuturesBasisArbitrageStrategy:
         call_price = call["close"]
         put_price = put["close"]
 
-        # Ensure the expiry date is a Timestamp
+        # 确保到期日是 Timestamp
         front_expiry = pd.Timestamp(call["expire_date"]).normalize()
 
         # =========================================================
@@ -119,7 +119,7 @@ class SyntheticFuturesBasisArbitrageStrategy:
         basis = (synthetic_futures - spot) / spot
 
         # =========================================================
-        # 4. Position state
+        # 4. 仓位状态
         # =========================================================
         pos = portfolio.get_positions()
         underlying_pos = pos["underlying"]
@@ -128,44 +128,44 @@ class SyntheticFuturesBasisArbitrageStrategy:
         has_position = (underlying_pos != 0) or (len(option_pos) > 0)
 
         # =========================================================
-        # 5. Forced closing on the expiry date
+        # 5. 强制平仓（到期日）
         # =========================================================
         if has_position and self.lock_expiry is not None:
 
-            # Ensure lock_expiry is a Timestamp
+            # 确保 lock_expiry 是 Timestamp
             if isinstance(self.lock_expiry, str):
                 self.lock_expiry = pd.Timestamp(self.lock_expiry).normalize()
 
             if date >= self.lock_expiry:
 
-                print(f"Options expire today; close positions：{date}")
+                print(f"今天期权到期，平仓：{date}")
                 orders += self._close_all(option_snapshot, option_pos, underlying_pos, portfolio)
                 self._reset()
                 return orders
 
         # =========================================================
-        # 6. Closing signal when basis declines
+        # 6. 平仓信号（basis 回落）
         # =========================================================
         if has_position:
 
             if basis <= self.down_threshold:
-                print(f"Spread narrowed today; close positions：{date} | basis: {basis:.4%}")
+                print(f"今天spread变小，平仓：{date} | basis: {basis:.4%}")
                 orders += self._close_all(option_snapshot, option_pos, underlying_pos, portfolio)
                 self._reset()
                 return orders
 
         # =========================================================
-        # 7. Opening signal when the synthetic future trades at a premium
+        # 7. 开仓信号（升水）
         # =========================================================
         if not has_position:
 
-            # Ensure entry occurs before expiry
+            # 确保是在到期日之前开仓
             if basis >= self.upper_threshold and date < front_expiry:
 
-                print(f"Open today：{date} | basis: {basis:.4%} | Expiry date：{front_expiry}")
+                print(f"今天开仓：{date} | basis: {basis:.4%} | 到期日：{front_expiry}")
 
                 # =========================
-                # Long ETF (buy)
+                # ETF 多头（买入）
                 # =========================
                 etf_shares = self.quantity * 10000
                 orders.append({
@@ -174,14 +174,14 @@ class SyntheticFuturesBasisArbitrageStrategy:
                 })
 
                 # =========================
-                # Short synthetic futures
-                #   Sell Call (short)
-                #   Buy Put (long)
+                # 合成期货空头
+                #   卖出 Call（空头）
+                #   买入 Put（多头）
                 # =========================
                 orders.append({
                     "instrument": "option",
                     "order_book_id": call["order_book_id"],
-                    "quantity": -self.quantity,  # Negative quantity = sell
+                    "quantity": -self.quantity,  # 负数 = 卖出
                     "price": call_price,
                     "expire_date": call["expire_date"],
                     "option_type": "Call"
@@ -190,14 +190,14 @@ class SyntheticFuturesBasisArbitrageStrategy:
                 orders.append({
                     "instrument": "option",
                     "order_book_id": put["order_book_id"],
-                    "quantity": self.quantity,  # Positive quantity = buy
+                    "quantity": self.quantity,  # 正数 = 买入
                     "price": put_price,
                     "expire_date": put["expire_date"],
                     "option_type": "Put"
                 })
 
                 # =========================
-                # Record state
+                # 记录状态
                 # =========================
                 self.entry_date = date
                 self.lock_expiry = front_expiry
@@ -205,11 +205,11 @@ class SyntheticFuturesBasisArbitrageStrategy:
                 portfolio.set_position_strike(atm_strike)
                 portfolio.set_position_expire_date(front_expiry)
 
-                print(f"  Entry details：")
-                print(f"    ETF: +{etf_shares} units @ {spot:.4f}")
-                print(f"    Sell Call: {call['order_book_id']} @ {call_price:.4f}")
-                print(f"    Buy Put: {put['order_book_id']} @ {put_price:.4f}")
-                print(f"    Synthetic futures price: {synthetic_futures:.4f}")
-                print(f"    Basis: {basis:.4%}")
+                print(f"  开仓详情：")
+                print(f"    ETF: +{etf_shares}份 @ {spot:.4f}")
+                print(f"    卖出Call: {call['order_book_id']} @ {call_price:.4f}")
+                print(f"    买入Put: {put['order_book_id']} @ {put_price:.4f}")
+                print(f"    合成期货价格: {synthetic_futures:.4f}")
+                print(f"    基差: {basis:.4%}")
 
         return orders

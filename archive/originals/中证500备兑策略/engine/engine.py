@@ -82,7 +82,7 @@ class BacktestEngine:
             self.prepare_timeline()
 
         for date in self.timeline:
-            # Fix: use date_ts and date_str separately
+            # ✅ 修复：分开使用 date_ts 和 date_str
             date_ts = pd.Timestamp(date)
             date_str = date_ts.strftime('%Y-%m-%d')
             
@@ -101,7 +101,7 @@ class BacktestEngine:
 
             # ===== strategy =====
             option_orders = self.option_strategy.generate_signal(
-                timestamp=date_ts,  # Pass a Timestamp
+                timestamp=date_ts,  # ✅ 传入 Timestamp
                 underlying_snapshot=underlying_snapshot,
                 option_snapshot=option_snapshot,
                 portfolio=self.portfolio,
@@ -111,7 +111,7 @@ class BacktestEngine:
             self.process_orders(option_orders, date_str, spot_price)
 
             underlying_orders = self.underlying_strategy.generate_signal(
-                timestamp=date_ts,  # Pass a Timestamp
+                timestamp=date_ts,  # ✅ 传入 Timestamp
                 underlying_snapshot=underlying_snapshot,
                 option_snapshot=option_snapshot,
                 portfolio=self.portfolio,

@@ -1,0 +1,58 @@
+[
+  {
+    "project": "Cover-Call",
+    "variant": "-1",
+    "daily_records": 844,
+    "trade_records": 80,
+    "equity_exact_match": true,
+    "trades_exact_match": true
+  },
+  {
+    "project": "Cover-Call",
+    "variant": "-2",
+    "daily_records": 844,
+    "trade_records": 92,
+    "equity_exact_match": true,
+    "trades_exact_match": true
+  },
+  {
+    "project": "Cover-Call",
+    "variant": "0",
+    "daily_records": 844,
+    "trade_records": 64,
+    "equity_exact_match": true,
+    "trades_exact_match": true
+  },
+  {
+    "project": "Cover-Call",
+    "variant": "2",
+    "daily_records": 844,
+    "trade_records": 44,
+    "equity_exact_match": true,
+    "trades_exact_match": true
+  },
+  {
+    "project": "Cover-Call",
+    "variant": "1",
+    "daily_records": 844,
+    "trade_records": 58,
+    "equity_exact_match": true,
+    "trades_exact_match": true
+  },
+  {
+    "project": "Cover-Call",
+    "variant": "3",
+    "daily_records": 844,
+    "trade_records": 40,
+    "equity_exact_match": true,
+    "trades_exact_match": true
+  },
+  {
+    "project": "Cover-Call",
+    "variant": "wheel",
+    "daily_records": 844,
+    "trade_records": 42,
+    "equity_exact_match": true,
+    "trades_exact_match": true
+  }
+]

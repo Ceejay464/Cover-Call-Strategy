@@ -1,0 +1,4 @@
+# Versions actually used for the verification run; Python 3.13
+numpy==2.4.4
+pandas==3.0.2
+openpyxl==3.1.5

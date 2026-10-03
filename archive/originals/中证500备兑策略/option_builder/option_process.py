@@ -10,24 +10,24 @@ class OptionDatabase:
 
     def get_chain(self, timestamp: str) -> pd.DataFrame | None:
         """
-        Get the complete option chain for one date
+        获取某一天的全部期权链
         """
         return self.option_by_date.get(timestamp)
 
     def get_spot(self, date: str) -> float | None:
         """
-        Get the underlying price for one date (close or a specified price column)
+        获取某一天的标的价格（收盘价或指定价格列）
         """
         row = self.underlying_df[self.underlying_df["date"] == date]
-        # Fix: add a missing-value check
+        # ✅ 修复：添加空值检查
         if row.empty:
             return None
         return float(row["close"].values[0])
 
     def split_by_expiry_date(self, option_day: pd.DataFrame) -> dict:
         """
-        input: option_day from self.option_by_date.get(timestamp)
-        Group a single day's option chain by expiry_date
+        input: option_day 来自 self.option_by_date.get(timestamp)
+        将单日期权链按 expiry_date 分组
         return: dict[expiry_date -> DataFrame]
         """
         df = option_day.copy()
@@ -52,8 +52,8 @@ class OptionDatabase:
     def get_atm_strike(self, expire_chain: pd.DataFrame, spot: float):
         """
         spot: get_spot()
-        Input: option chain for one expiry
-        Output: ATM strike
+        输入：单个 expiry 的 option chain
+        输出：ATM strike
         """
         df = expire_chain.copy()
         df["dist"] = (df["strike_price"] - spot).abs()
@@ -62,11 +62,11 @@ class OptionDatabase:
 
     def get_atm_pair(self, expire_chain: pd.DataFrame, atm_strike):
         """
-        Input:
-            expiry_chain: Option chain for one expiry
-            atm_strike: ATM strike price
-        Output:
-            atm_call, atm_put Data type:<class 'pandas.DataFrame'>
+        输入：
+            expiry_chain: 单个 expiry 的 option chain
+            atm_strike: ATM 行权价
+        输出：
+            atm_call, atm_put 数据类型：<class 'pandas.DataFrame'>
         """
         df = expire_chain.copy()
         atm_df = df[df["strike_price"] == atm_strike]
@@ -82,8 +82,8 @@ class OptionDatabase:
 
     def get_option_pair_by_level(self, expire_chain, atm_strike, level=0):
         '''
-        1 -> one-strike OTM Call and one-strike ITM Put
-        2 -> two-strike OTM Call and two-strike ITM Put
+        1 -> 虚一档Call和实一档Put
+        2 -> 虚二档Call和实二档Put
         ................
         '''
         df = expire_chain.copy()

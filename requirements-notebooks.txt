@@ -1,0 +1,6 @@
+# Optional, for original notebooks (missing data/modules may still be needed)
+-r requirements.txt
+matplotlib
+scipy
+plotly
+jupyterlab

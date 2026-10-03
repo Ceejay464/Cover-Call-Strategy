@@ -1,108 +1,66 @@
-# 🏦 中证500备兑策略回测系统
+# CSI 500 ETF Covered Call Strategy
 
-> Covered Call Strategy Backtest System Based on CSI 500 ETF
+**ETF ownership · Short calls · Expiry settlement and rollover**
 
-## 📌 项目简介
+![Covered Call strategy schematic](assets/teaser.png)
 
-本项目是一个基于中证500ETF的**备兑策略（Covered Call）回测系统**，包含完整的策略回测框架、绩效分析以及策略优化方向探索。回测区间为2022年下半年至2026年上半年，旨在评估备兑策略在国内市场的收益增强与风险控制效果。
+A custom daily backtesting framework with bundled ETF and option-chain CSVs. The local command-line entry point reuses the
+original covered-call and wheel strategies, engine, and portfolio bookkeeping.
 
-## 📁 项目结构
-
-## 🧠 策略逻辑
-
-### 核心流程
-
-1. **建仓**：买入10000份中证500ETF作为底仓，同时卖出对应份数的近月看涨期权
-2. **持仓与行权判断**（每月期权到期日）：
-   - 若**不行权**（$S < K$）：期权作废，收取权利金，继续卖出下月看涨期权
-   - 若**行权**（$S > K$）：被动行权卖出标的，赚取价差（$K - S_{ex}$）与权利金，然后重新买入ETF并继续卖出下月看涨期权
-
-### 盈利来源
-
-| 维度 | 说明 |
-| :--- | :--- |
-| **交易维度** | 不行权时赚取权利金；行权时赚取（行权价 - 买入价）+ 权利金 |
-| **希腊字母维度** | 保留小部分正Delta；卖出看涨期权获得负Theta，利用近月期权时间价值快速衰减获利 |
-
-### 风险来源
-
-- **Gamma风险**：卖出看涨期权导致Short Gamma，标的大幅波动时产生亏损
-- **Vega风险**：卖出看涨期权导致Short Vega，隐含波动率飙升时产生亏损
-- **流动性风险**：深度虚值、临近到期或非主力月份期权合约流动性不足
-
-## 📊 回测结果
-
-### 参数设置
-
-| 参数 | 数值 |
-| :--- | :--- |
-| 初始资金 | 100万元 |
-| 期权价格 | 0.8元/张 |
-| ETF手续费 | 万分之三 |
-| 期权滑点 | 0.1% |
-| 回测区间 | 2022年下半年 ~ 2026年上半年 |
-| 数据频率 | 日频 |
-
-### 虚一档备兑策略 vs 纯多头
-
-| 策略 | 年化收益率 | 最大回撤 |
+| Strategy | Position structure | Main behavior |
 | :--- | :--- | :--- |
-| 备兑策略（虚一档） | 0.82% | 3.33% |
-| 纯多头（基准） | 0.71% | 4.24% |
+| Covered Call | Long ETF + short call | Select a call by strike level; handle exercise, rebuild ETF exposure, and roll to the next expiry |
+| Wheel | Short puts while in cash; short calls while holding ETF | Switch between the original cash and ETF-holding phases |
 
-**结论**：备兑策略在收益端实现小幅增强（年化提升约0.11个百分点），同时在风险端提供了有效的下行保护（最大回撤收窄近1个百分点），达到了"增强收益、平滑曲线"的预设目标。
+## Quick start
 
-### 不同档位期权对比
-
-| 档位 | 收益表现 | 说明 |
-| :--- | :--- | :--- |
-| 深度虚值（OTM2/OTM3） | 较弱 | 权利金过薄，保护力度不足 |
-| 虚一档（OTM1） | 中等 | 收益与保护较为均衡 |
-| 平值（ATM） | 较好 | 收益进一步提升 |
-| 实值（ITM） | 最高 | 厚权利金提供最强保护 |
-
-**核心发现**：回测期内呈现"行权价越低（越实值）、策略表现越优"的单调递增特征，原因在于：
-1. 实值期权权利金中包含较高内在价值，安全垫更厚
-2. 回测期以震荡和温和行情为主，实值策略的低Delta特征使净值更平稳
-
-> ⚠️ 该规律并非普适，高度依赖于市场环境：单边上涨时虚值更优，震荡或下跌时实值更优。
-
-## 🔧 策略优化方向
-
-### 方向一：动态调整开仓期权档位
-
-根据市场状态预判动态调整卖出期权的行权价格：
-- **预判单边上涨** → 选择**虚值**看涨期权，保留上行弹性
-- **预判震荡或下跌** → 选择**实值**看涨期权，厚权利金提供更强保护
-
-### 方向二：轮盘策略（Wheel Strategy）
-
-将备兑策略升级为轮盘策略，实现"现金→持股→现金"的滚动循环：
-1. 先卖出看跌期权（Put）收租，等待回调折价建仓
-2. 持有股票后再卖出看涨期权（Call）持续增强收益
-
-**回测对比**（虚一档）：
-
-| 策略 | 年化收益率 | 最大回撤 |
-| :--- | :--- | :--- |
-| 备兑策略 | 0.82% | 3.33% |
-| 轮盘策略 | 0.76% | 3.57% |
-
-在本回测区间内，备兑策略略优于轮盘策略，原因在于温和上涨市场中始终持股的结构更具优势；轮盘策略更适用于震荡或下跌市场。
-
-## 📝 实盘注意事项
-
-1. **优先选择主力合约月份**，避免交易深度虚值或冷门合约
-2. 关注**流动性折价**对策略执行的影响
-3. 极端行情下流动性可能枯竭，需提前做好头寸调整预案
-4. 策略优化应基于市场状态预判动态调整，而非固定使用某一档位
-
-## 🚀 如何运行
+From the extracted project root, with Python 3.10 or later:
 
 ```bash
-# 1. 确保已安装 Python 3.8+
-# 2. 安装依赖（如有）
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
+python -m local.run --strategy cover_call --level 1 --output runs/cover_call
+python -m local.run --strategy wheel --level 1 --output runs/wheel
+```
 
-# 3. 运行回测系统
-python backtest_system.py
+The market-data CSVs are included. Defaults follow the original notebook: October 1, 2022 to April 1, 2026,
+initial cash of 1,000,000, one option contract, and 10,000 ETF shares. The ETF commission rate is `0.0001`,
+option commission is `0.8` per contract, and relative option slippage is `0.001`.
+
+The strategy does not invest all initial cash in ETF shares. Check cash balances and actual exposure when interpreting the benchmark.
+
+## Original research
+
+- [Covered-call notebook](中证500备兑策略/CoverCallStrategy.ipynb)
+- [Wheel notebook](中证500备兑策略/OptionWheelStrategy.ipynb)
+- [English research report](Cover_Call_Research_EN.pdf)
+- Original implementation: `中证500备兑策略/{strategy,engine,portfolio,option_builder,data}/`
+
+New summaries are computed from actual runs. Historical figures in the archived original README are not presented as independently verified results.
+
+## Explore and reproduce
+
+| File | Purpose |
+| :--- | :--- |
+| [Quickstart.ipynb](Quickstart.ipynb) | Guided entry point; original research notebooks remain available |
+| [PROJECT_OVERVIEW.html](PROJECT_OVERVIEW.html) | Offline project overview, opened directly in a browser |
+| [docs/REPRODUCE.md](docs/REPRODUCE.md) | Environment setup, data schema, commands, and outputs |
+| [docs/IMPLEMENTATION_NOTES.md](docs/IMPLEMENTATION_NOTES.md) | Actual code behavior, documentation discrepancies, and boundaries |
+| [docs/VALIDATION.md](docs/VALIDATION.md) | Completed checks and unverified items |
+| [docs/ORIGINAL_README.md](docs/ORIGINAL_README.md) | Archived original README, including previously reported results |
+| [CHANGELOG.md](CHANGELOG.md) | Scope of changes |
+
+Each run writes daily equity, trades, parameter and data fingerprints, a log, and a table-only HTML report to `runs/`.
+Nonempty output directories are never overwritten. Choose a new `--output` for each run.
+
+## Preserve the strategy
+
+The strategy calculations, parameters, data fields, and identifiers are preserved. Comments, docstrings, and reader-facing logs are translated. Exact original sources are retained in `archive/originals/`.
+New entry points live in `local/`: no parameter optimization, additional trading rules, or changes to exercise or rollover logic.
+Original notebook calculations and execution counts are retained. Comments, descriptive strings, and displayed output labels are translated; programmatic fields remain intact. English navigation is added at the top.
+English research documents and market-data files are retained as source materials.
+
+`docs/original_manifest.json` records original file hashes and retained locations. Run
+`python -m local.verify_originals` to verify original archive bytes, unchanged data, and translated executable semantics.
+
+The teaser is a user-approved strategy schematic, not a backtest result. Synthetic fixtures are selected only with an explicit `--demo`.
+Previously reported results, synthetic demonstrations, and user-data runs are labeled separately.
